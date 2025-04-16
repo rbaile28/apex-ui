@@ -3,160 +3,172 @@
     🎯 Targeted Players ({{ players.length }})
   </h2>
 
-  <table class="w-full table-auto text-sm text-white bg-gray-800 rounded-lg overflow-hidden shadow">
-    <thead class="bg-gray-700 uppercase text-xs">
-      <tr>
-        <th class="px-4 py-2 text-center">🎯</th>
-        <th class="px-4 py-2 text-left">Name</th>
-        <th class="px-4 py-2 text-left">School</th>
-        <th class="px-4 py-2 text-center">Class</th>
-        <th class="px-4 py-2 text-center">Position</th>
-        <th class="px-4 py-2 text-center">Season</th>
-        <th class="px-4 py-2 text-center">Search</th>
-        <th class="px-4 py-2 text-center">Socials</th>
-        <th class="px-4 py-2 text-center">Progress</th>
-        <th class="px-4 py-2 text-center">Interest</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        *ngFor="let player of players"
-        [ngClass]="getRowColor(player['interest_ours'])"
-        class="border-b border-gray-600 hover:bg-gray-700 transition"
-      >
-        <td class="px-4 py-2 text-center">
-          <button (click)="untargetPlayer(player)" class="text-xl text-yellow-400 hover:scale-110 transition-transform">
-            ★
-          </button>
-        </td>
+  <div class="overflow-x-auto">
+    <table class="min-w-full table-auto text-sm text-white bg-gray-800 rounded-lg shadow">
+      <thead class="bg-gray-700 uppercase text-xs">
+        <tr>
+          <th class="px-2 py-2 text-center">🎯</th>
+          <th class="px-2 py-2 text-left">Name</th>
+          <th class="px-2 py-2 text-left md:table-cell hidden">School</th>
+          <th class="px-2 py-2 text-center">Class</th>
+          <th class="px-2 py-2 text-center md:table-cell hidden">Position</th>
+          <th class="px-2 py-2 text-center md:table-cell hidden">Season</th>
+          <th class="px-2 py-2 text-center md:table-cell hidden">Search</th>
+          <th class="px-2 py-2 text-center">Socials</th>
+          <th class="px-2 py-2 text-center">Progress</th>
+          <th class="px-2 py-2 text-center">Interest</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let player of players"
+          [ngClass]="getRowColor(player['interest_ours'])"
+          class="border-b border-gray-600 hover:bg-gray-700 transition"
+        >
+          <!-- Target Star -->
+          <td class="px-2 py-1 text-center">
+            <button (click)="untargetPlayer(player)" class="text-xl text-yellow-400 hover:scale-110 transition-transform">
+              ★
+            </button>
+          </td>
 
-        <td class="px-4 py-2">
-          <a [routerLink]="['/players', player.id]" class="text-[#81ecec] hover:underline text-lg">
-            {{ player.player_name }}
-          </a>
-        </td>
+          <!-- Player Name -->
+          <td class="px-2 py-1">
+            <a [routerLink]="['/players', player.id]" class="text-[#81ecec] hover:underline text-base md:text-lg">
+              {{ player.player_name }}
+            </a>
+          </td>
 
-        <td class="px-4 py-2">
-          <span class="text-lg">{{player.school }}</span>
-          <div class="text-xs text-gray-300 space-y-1">
-            <div *ngIf="editingField[player.id!] === 'club_team'; else clubTeamDisplay">
-              <input [(ngModel)]="player.club_team" (blur)="saveInline(player)" class="bg-gray-700 text-white p-1 rounded w-full" />
+          <!-- School + Club + GPA (hidden on small) -->
+          <td class="px-2 py-1 md:table-cell hidden">
+            <span class="text-sm md:text-base">{{ player.school }}</span>
+            <div class="text-xs text-gray-300 space-y-1">
+              <div *ngIf="editingField[player.id!] === 'club_team'; else clubTeamDisplay">
+                <input [(ngModel)]="player.club_team" (blur)="saveInline(player)" class="bg-gray-700 text-white p-1 rounded w-full text-xs" />
+              </div>
+              <ng-template #clubTeamDisplay>
+                <span (click)="setEditing(player.id!, 'club_team')" class="cursor-pointer hover:underline">
+                  Club: {{ player.club_team || '—' }}
+                </span>
+              </ng-template>
+
+              <div *ngIf="editingField[player.id!] === 'gpa'; else gpaDisplay">
+                <input [(ngModel)]="player.gpa" (blur)="saveInline(player)" class="bg-gray-700 text-white p-1 rounded w-full text-xs" />
+              </div>
+              <ng-template #gpaDisplay>
+                <span (click)="setEditing(player.id!, 'gpa')" class="cursor-pointer hover:underline">
+                  GPA: {{ player.gpa || '—' }}
+                </span>
+              </ng-template>
             </div>
-            <ng-template #clubTeamDisplay>
-              <span (click)="setEditing(player.id!, 'club_team')" class="cursor-pointer hover:underline">
-                Club: {{ player.club_team || '—' }}<br>
-              </span>
-            </ng-template>
+          </td>
 
-            <div *ngIf="editingField[player.id!] === 'gpa'; else gpaDisplay">
-              <input [(ngModel)]="player.gpa" (blur)="saveInline(player)" class="bg-gray-700 text-white p-1 rounded w-full" />
-            </div>
-            <ng-template #gpaDisplay>
-              <span (click)="setEditing(player.id!, 'gpa')" class="cursor-pointer hover:underline">
-                GPA: {{ player.gpa || '—' }}
-              </span>
-            </ng-template>
-          </div>
-        </td>
+          <!-- Grad Year -->
+          <td class="px-2 py-1 text-center text-sm">
+            {{ player.grad_year }}
+          </td>
 
-        <td class="px-4 py-2 text-center"><span class="text-lg">{{ player.grad_year }}</span></td>
-        <td class="px-4 py-2 text-center"><span class="text-lg">{{ player.position }}</span></td>
-        <td class="px-4 py-2 text-center">
-          <a [href]="player.roster_url" target="_blank" class="text-[#81ecec] hover:underline">
-            {{ player.season }}
-          </a>
-        </td>
+          <!-- Position (hidden on small) -->
+          <td class="px-2 py-1 text-center md:table-cell hidden text-sm">
+            {{ player.position }}
+          </td>
 
-        <!-- Search Links -->
-        <td class="px-4 py-2 text-center space-y-1">
-          <a [href]="getSearchLink(player, 'instagram')" target="_blank" class="text-[#81ecec] hover:underline"><i class="fab fa-instagram"></i> 🔍</a><br />
-          <a [href]="getSearchLink(player, 'twitter')" target="_blank" class="text-[#81ecec] hover:underline"><i class="fab fa-twitter"></i> 🔍</a><br />
-          <a [href]="getSearchLink(player, 'google')" target="_blank" class="text-[#81ecec] hover:underline"><i class="fab fa-google"></i> 🔍</a>
-        </td>
+          <!-- Season (hidden on small) -->
+          <td class="px-2 py-1 text-center md:table-cell hidden text-sm">
+            <a [href]="player.roster_url" target="_blank" class="text-[#81ecec] hover:underline">
+              {{ player.season }}
+            </a>
+          </td>
 
-        <!-- Socials (Compact) -->
-        <td class="px-2 py-1 text-left text-sm leading-5 space-y-0.5">
-          <ng-container *ngFor="let key of ['twitter', 'instagram', 'hudl', 'maxpreps']">
-            <div *ngIf="editingField[player.id!] === key; else displaySocial">
-              <input
-                [(ngModel)]="player[key]"
-                (blur)="saveInline(player)"
-                class="bg-gray-700 text-white p-0.5 rounded w-28 text-xs"
-              />
-            </div>
-            <ng-template #displaySocial>
-              <span
-                (click)="setEditing(player.id!, key)"
-                class="cursor-pointer hover:text-[#81ecec] flex items-center gap-1"
-                [ngClass]="{ 'text-gray-400': !player[key], 'text-white': player[key] }"
-              >
-                <i
-                  class="text-xs w-4"
-                  [ngClass]="[
-                    key === 'twitter' ? 'fab fa-twitter' :
-                    key === 'instagram' ? 'fab fa-instagram' :
-                    key === 'hudl' ? 'fas fa-video' :
-                    key === 'maxpreps' ? 'fas fa-school' : ''
-                  ]"
-                ></i>
-                <span class="text-xs">{{ player[key] || '—' }}</span>
-              </span>
-            </ng-template>
-          </ng-container>
-        </td>
+          <!-- Search (hidden on small) -->
+          <td class="px-2 py-1 text-center space-y-1 md:table-cell hidden">
+            <a [href]="getSearchLink(player, 'instagram')" target="_blank" class="text-[#81ecec] hover:underline">
+              <i class="fab fa-instagram"></i> 🔍
+            </a><br />
+            <a [href]="getSearchLink(player, 'twitter')" target="_blank" class="text-[#81ecec] hover:underline">
+              <i class="fab fa-twitter"></i> 🔍
+            </a><br />
+            <a [href]="getSearchLink(player, 'google')" target="_blank" class="text-[#81ecec] hover:underline">
+              <i class="fab fa-google"></i> 🔍
+            </a>
+          </td>
 
+          <!-- Socials -->
+          <td class="px-2 py-1 text-left text-xs leading-5 space-y-0.5">
+            <ng-container *ngFor="let key of ['twitter', 'instagram', 'hudl', 'maxpreps']">
+              <div *ngIf="editingField[player.id!] === key; else displaySocial">
+                <input
+                  [(ngModel)]="player[key]"
+                  (blur)="saveInline(player)"
+                  class="bg-gray-700 text-white p-1 rounded w-28 text-xs"
+                />
+              </div>
+              <ng-template #displaySocial>
+                <span
+                  (click)="setEditing(player.id!, key)"
+                  class="cursor-pointer hover:text-[#81ecec] flex items-center gap-1"
+                  [ngClass]="{ 'text-gray-400': !player[key], 'text-white': player[key] }"
+                >
+                  <i
+                    class="text-xs w-4"
+                    [ngClass]="[
+                      key === 'twitter' ? 'fab fa-twitter' :
+                      key === 'instagram' ? 'fab fa-instagram' :
+                      key === 'hudl' ? 'fas fa-video' :
+                      key === 'maxpreps' ? 'fas fa-school' : ''
+                    ]"
+                  ></i>
+                  <span class="truncate w-28">{{ player[key] || '—' }}</span>
+                </span>
+              </ng-template>
+            </ng-container>
+          </td>
 
+          <!-- Progress (compact) -->
+          <td class="px-2 py-1 text-left text-xs leading-5 space-y-0.5">
+            <ng-container *ngFor="let stage of ['contacted_date', 'call_date', 'offer_date', 'visit_date']">
+              <div *ngIf="editingField[player.id!] === stage; else stageDisplay">
+                <input
+                  type="date"
+                  [(ngModel)]="player[stage]"
+                  (blur)="saveInline(player)"
+                  class="bg-gray-700 text-white p-1 rounded w-28 text-xs"
+                />
+              </div>
+              <ng-template #stageDisplay>
+                <span
+                  (click)="setEditing(player.id!, stage)"
+                  class="cursor-pointer flex items-center gap-1 hover:text-[#81ecec]"
+                  [ngClass]="{ 'text-gray-400': !player[stage], 'text-white': player[stage] }"
+                >
+                  <i
+                    class="fas text-xs"
+                    [ngClass]="{
+                      'fa-envelope': stage === 'contacted_date',
+                      'fa-phone': stage === 'call_date',
+                      'fa-hand-holding-usd': stage === 'offer_date',
+                      'fa-map-marker-alt': stage === 'visit_date'
+                    }"
+                  ></i>
+                  <span class="text-xs">{{ player[stage] || '—' }}</span>
+                </span>
+              </ng-template>
+            </ng-container>
+          </td>
 
-        <!-- Progress (Compact) -->
-        <td class="px-2 py-1 text-left text-sm leading-5 space-y-0.5">
-          <ng-container *ngFor="let stage of ['contacted_date', 'call_date', 'offer_date', 'visit_date']">
-            <div *ngIf="editingField[player.id!] === stage; else stageDisplay">
-              <input
-                type="date"
-                [(ngModel)]="player[stage]"
-                (blur)="saveInline(player)"
-                class="bg-gray-700 text-white p-0.5 rounded w-28 text-xs"
-              />
-            </div>
-
-            <ng-template #stageDisplay>
-              <span
-                (click)="setEditing(player.id!, stage)"
-                class="cursor-pointer flex items-center gap-1 hover:text-[#81ecec]"
-                [ngClass]="{
-                  'text-gray-400': !player[stage],
-                  'text-white': player[stage]
-                }"
-              >
-                <i
-                  class="fas text-xs"
-                  [ngClass]="{
-                    'fa-envelope': stage === 'contacted_date',
-                    'fa-phone': stage === 'call_date',
-                    'fa-hand-holding-usd': stage === 'offer_date',
-                    'fa-map-marker-alt': stage === 'visit_date'
-                  }"
-                ></i>
-                <span class="text-xs">{{ player[stage] || '—' }}</span>
-              </span>
-            </ng-template>
-          </ng-container>
-        </td>
-
-        <!-- Our Interest Level -->
-        <td class="px-2 py-1 text-center">
-          <select
-            [(ngModel)]="player.interest_ours"
-            (change)="saveInline(player)"
-            class="bg-gray-700 text-white rounded px-2 py-1 text-sm"
-          >
-            <option [ngValue]="null">—</option>
-            <option *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10]" [ngValue]="i">{{ i }}</option>
-          </select>
-        </td>
-
-
-      </tr>
-    </tbody>
-  </table>
+          <!-- Interest -->
+          <td class="px-2 py-1 text-center">
+            <select
+              [(ngModel)]="player.interest_ours"
+              (change)="saveInline(player)"
+              class="bg-gray-700 text-white rounded px-2 py-1 text-xs w-full"
+            >
+              <option [ngValue]="null">—</option>
+              <option *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10]" [ngValue]="i">{{ i }}</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
