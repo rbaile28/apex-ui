@@ -1,0 +1,51 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  
+    label {
+      display: flex;
+      flex-direction: column;
+      font-weight: bold;
+    }
+  
+    input {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  
+    button {
+      width: 100px;
+      padding: 0.5rem;
+      font-weight: bold;
+      background-color: #81ecec;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+  }
+  .button-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+  
+      &:first-child {
+        background-color: #81ecec;
+        color: white;
+      }
+  
+      &:last-child {
+        background-color: #6c757d;
+        color: white;
+      }
+    }
+  }
+  

@@ -1,0 +1,78 @@
+<div class="bg-gray-800 text-white p-4 rounded-lg shadow mb-4 grid grid-cols-2 md:grid-cols-5 gap-4">
+  <input
+    class="bg-gray-700 text-white p-2 rounded"
+    [(ngModel)]="filters.player_name"
+    (ngModelChange)="fetchPlayers()"
+    placeholder="Name"
+  />
+
+  <input
+    class="bg-gray-700 text-white p-2 rounded"
+    [(ngModel)]="filters.school"
+    (ngModelChange)="loadPlayers()"
+    placeholder="School"
+  />
+  <select
+    class="bg-gray-700 text-white p-2 rounded"
+    [(ngModel)]="filters.grad_year"
+    (ngModelChange)="loadPlayers()"
+  >
+    <option value="">All Classes</option>
+    <option value="Fr">Freshman</option>
+    <option value="So">Sophomore</option>
+    <option value="Jr">Junior</option>
+    <option value="Sr">Senior</option>
+  </select>
+  <select
+    class="bg-gray-700 text-white p-2 rounded"
+    [(ngModel)]="filters.season"
+    (ngModelChange)="loadPlayers()"
+  >
+    <option value="">All Seasons</option>
+    <option value="24-25">2024–25</option>
+    <option value="23-24">2023–24</option>
+  </select>
+  <input
+    class="bg-gray-700 text-white p-2 rounded"
+    [(ngModel)]="filters.position"
+    (ngModelChange)="loadPlayers()"
+    placeholder="Position"
+  />
+</div>
+
+
+<table class="w-full table-auto text-sm text-white">
+  <thead class="bg-gray-700 uppercase text-xs">
+    <tr>
+      <th class="px-4 py-2">🎯</th>
+      <th class="px-4 py-2">Name</th>
+      <th class="px-4 py-2">School</th>
+      <th class="px-4 py-2">Class</th>
+      <th class="px-4 py-2">Position</th>
+      <th class="px-4 py-2">Season</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let player of players" class="border-b border-gray-600 hover:bg-gray-700 transition">
+      <td class="px-4 py-2 text-center">
+        <button (click)="toggleTarget(player)" class="text-yellow-400 hover:scale-110 transition-transform">
+          <span *ngIf="player.targeted">★</span>
+          <span *ngIf="!player.targeted">☆</span>
+        </button>
+      </td>
+      <td class="px-4 py-2 text-center">
+        <a [routerLink]="['/players', player.id]" class="text-tiffany hover:underline">
+          {{ player.player_name }}
+        </a>        
+      </td>
+      <td class="px-4 py-2 text-center">{{ player.school }}</td>
+      <td class="px-4 py-2 text-center">{{ player.grad_year }}</td>
+      <td class="px-4 py-2 text-center">{{ player.position }}</td>
+      <td class="px-4 py-2 text-center">
+        <a [href]="player.roster_url" target="_blank" class="text-tiffany hover:underline">
+          {{ player.season }}
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>

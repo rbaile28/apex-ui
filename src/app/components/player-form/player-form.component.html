@@ -1,0 +1,92 @@
+<form (ngSubmit)="onSubmit()" #form="ngForm" class="form-container space-y-4 text-white">
+
+  <!-- Basic Info -->
+  <label class="block">
+    <span class="text-sm">Name</span>
+    <input [(ngModel)]="player.player_name" name="player_name" required class="w-full p-2 bg-gray-700 rounded" />
+  </label>
+
+  <label class="block">
+    <span class="text-sm">School</span>
+    <input [(ngModel)]="player.school" name="school" required class="w-full p-2 bg-gray-700 rounded" />
+  </label>
+
+  <label class="block">
+    <span class="text-sm">Grad Year</span>
+    <input [(ngModel)]="player.grad_year" name="grad_year" class="w-full p-2 bg-gray-700 rounded" />
+  </label>
+
+  <label class="block">
+    <span class="text-sm">Position</span>
+    <input [(ngModel)]="player.position" name="position" class="w-full p-2 bg-gray-700 rounded" />
+  </label>
+
+  <label class="block">
+    <span class="text-sm">Season</span>
+    <input [(ngModel)]="player.season" name="season" class="w-full p-2 bg-gray-700 rounded" />
+  </label>
+
+  <label class="block">
+    <span class="text-sm">Roster URL</span>
+    <input [(ngModel)]="player.roster_url" name="roster_url" class="w-full p-2 bg-gray-700 rounded" />
+  </label>
+
+  <!-- Social Media -->
+  <label class="block">
+    <span class="text-sm">Twitter</span>
+    <input [(ngModel)]="player.twitter" name="twitter" placeholder="@handle or full URL"
+           class="w-full p-2 bg-gray-700 rounded" />
+  </label>
+
+  <label class="block">
+    <span class="text-sm">Instagram</span>
+    <input [(ngModel)]="player.instagram" name="instagram" placeholder="@handle or full URL"
+           class="w-full p-2 bg-gray-700 rounded" />
+  </label>
+
+  <label class="block mb-2">
+    <span class="text-white">Phone</span>
+    <input [(ngModel)]="player.phone" name="phone" type="text" class="bg-gray-700 text-white p-2 rounded w-full" />
+  </label>  
+
+  <!-- Notes -->
+  <label class="block">
+    <span class="text-sm">Notes</span>
+    <textarea [(ngModel)]="player.notes" name="notes" rows="3"
+              class="w-full p-2 bg-gray-700 rounded"></textarea>
+  </label>
+
+  <!-- Recruiting Stages -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div *ngFor="let stage of stages">
+      <label class="flex items-center gap-2">
+        <input
+          type="checkbox"
+          [checked]="getField(stage.key)"
+          (change)="handleCheckboxChange($event, stage.key)"
+        />
+        {{ stage.label }}
+      </label>
+
+      <input
+        *ngIf="getField(stage.key)"
+        type="date"
+        class="w-full mt-1 p-2 bg-gray-700 rounded"
+        [value]="getField(stage.dateKey) || ''"
+        (change)="handleDateChange($event, stage.dateKey)"
+      />
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="flex justify-end gap-2 pt-4">
+    <button type="submit" [disabled]="form.invalid"
+            class="px-4 py-2 bg-tiffany hover:bg-tiffany rounded text-white">
+      Save
+    </button>
+    <button type="button" (click)="cancel.emit()"
+            class="px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded text-white">
+      Cancel
+    </button>
+  </div>
+</form>

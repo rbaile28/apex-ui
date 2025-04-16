@@ -1,0 +1,29 @@
+<div class="p-4 text-white bg-gray-800 rounded-lg shadow">
+  <div *ngIf="loading" class="text-gray-400">Loading...</div>
+
+  <div *ngIf="player && !loading">
+    <h2 class="text-2xl font-bold mb-4">{{ player.player_name }}</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <ng-container *ngFor="let field of fields">
+        <div>
+          <label class="block font-semibold mb-1">{{ field.label }}:</label>
+          <ng-container *ngIf="editingField === field.key; else viewMode">
+            <input
+              [(ngModel)]="player[field.key]"
+              (blur)="saveField(field.key)"
+              class="bg-gray-700 text-white p-2 rounded w-full"
+              [type]="field.type || 'text'"
+              autofocus
+            />
+          </ng-container>
+          <ng-template #viewMode>
+            <span (click)="editField(field.key)" class="cursor-pointer hover:underline text-[#81ecec]">
+              {{ player[field.key] || '—' }}
+            </span>
+          </ng-template>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

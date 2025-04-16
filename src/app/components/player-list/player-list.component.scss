@@ -1,0 +1,114 @@
+:host {
+  display: block;
+  background-color: #1f2937;
+}
+
+/* 🔆 Light mode styles */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  input,
+  .filter-select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #81ecec;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:last-child {
+      background-color: #6c757d;
+    }
+  }
+}
+
+.player-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f4f4f4;
+  }
+
+  tr:hover {
+    background-color: #f1f1f1;
+  }
+}
+
+/* 🌙 Dark mode overrides */
+:host-context(.dark) {
+  .filter-bar {
+    input,
+    .filter-select {
+      background-color: #1f2937; // Tailwind gray-800
+      color: #f9fafb;
+      border-color: #4b5563;     // Tailwind gray-600
+    }
+
+    button {
+      background-color: #3b82f6; // Tailwind blue-500
+      color: white;
+
+      &:last-child {
+        background-color: #6b7280; // Tailwind gray-500
+      }
+    }
+  }
+
+  .player-table {
+    background-color: #1f2937; // gray-800
+    color: #f9fafb;
+
+    th {
+      background-color: #374151; // gray-700
+      color: #f9fafb;
+    }
+
+    td {
+      border-color: #4b5563;
+    }
+
+    tr:hover {
+      background-color: #374151; // slightly lighter gray on hover
+    }
+  }
+}
+:host-context(.dark) {
+  .player-table {
+    background-color: #1f2937; // gray-800
+    color: #f9fafb;
+
+    th {
+      background-color: #374151; // gray-700
+      color: #f9fafb;
+    }
+
+    td {
+      border-color: #4b5563;
+    }
+
+    tbody tr {
+      background-color: #1f2937;
+
+      &:hover {
+        background-color: #374151;
+      }
+    }
+  }
+}
